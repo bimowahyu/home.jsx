@@ -19,8 +19,21 @@ const initialState = {
 // Axios instance dengan baseURL dan credentials
 const api = axios.create({
     baseURL: getApiBaseUrl(),
-    withCredentials: true
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json',
+    }
 });
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            // Redirect ke login jika unauthorized
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
 
 // // Fungsi login admin
 // export const LoginAdmin = createAsyncThunk("admin/login", async (user, thunkAPI) => {
@@ -127,12 +140,18 @@ export const LoginAdmin = createAsyncThunk("admin/login", async (credentials, th
 // getMeAdmin function to validate session
 export const getMeAdmin = createAsyncThunk("admin/getMe", async (_, thunkAPI) => {
     try {
-        const response = await api.get('/me');
-        console.log("Response data:", response.data);
+        const response = await api.get('/me', {
+            withCredentials: true,
+            headers: {
+                'Cache-Control': 'no-cache',
+            }
+        });
         return response.data;
     } catch (error) {
-        console.error("GetMeAdmin error:", error.response?.data || error.message);
-        return thunkAPI.rejectWithValue('Failed to retrieve admin data');
+        if (error.response?.status === 401) {
+            return thunkAPI.rejectWithValue('Session expired or not authenticated');
+        }
+        return thunkAPI.rejectWithValue(error.response?.data?.msg || 'Failed to retrieve admin data');
     }
 });
 
