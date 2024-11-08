@@ -128,8 +128,10 @@ export const LoginAdmin = createAsyncThunk("admin/login", async (credentials, th
 export const getMeAdmin = createAsyncThunk("admin/getMe", async (_, thunkAPI) => {
     try {
         const response = await api.get('/me');
+        console.log("Response data:", response.data);
         return response.data;
     } catch (error) {
+        console.error("GetMeAdmin error:", error.response?.data || error.message);
         return thunkAPI.rejectWithValue('Failed to retrieve admin data');
     }
 });
