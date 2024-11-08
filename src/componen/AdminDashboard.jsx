@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardWidget from "./DashboardWidget";
-import axios from "../api";
+import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import './SurveyorDashboard.css';
@@ -21,7 +21,9 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchRekapData = async () => {
       try {
-        const response = await axios.get('/filter',{withCredentials: true});
+        const response = await axios.get(`${process.env.REACT_APP_URL}/filter`,{
+            withCredentials: true
+        });
         if (response.status === 200) {
           const combinedData = [...response.data.layakHuni, ...response.data.tidakLayakHuni];
           const calculatedStatistics = calculateStatistics(combinedData);
@@ -42,7 +44,9 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('/me',{withCredentials: true});
+        const response = await axios.get(`${process.env.REACT_APP_URL}/me`,{
+            withCredentials: true
+        });
         if (response.status === 200) {
           setUsername(response.data.username);
         } else {
