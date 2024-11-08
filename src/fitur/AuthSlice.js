@@ -127,7 +127,7 @@ export const LoginAdmin = createAsyncThunk("admin/login", async (credentials, th
 // getMeAdmin function to validate session
 export const getMeAdmin = createAsyncThunk("admin/getMe", async (_, thunkAPI) => {
     try {
-        const response = await api.get('/api/me');
+        const response = await api.get('/me');
         return response.data;
     } catch (error) {
         return thunkAPI.rejectWithValue('Failed to retrieve admin data');
