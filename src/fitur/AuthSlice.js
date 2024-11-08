@@ -102,31 +102,6 @@ const api = axios.create({
 // export const { reset } = authAdminSlice.actions;
 // export default authAdminSlice.reducer;
 
-
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-const getApiBaseUrl = () => {
-    const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
-   const baseUrl = process.env.REACT_APP_URL.replace(/^https?:\/\//, '');
-    return `${protocol}://${baseUrl}`;
-  };
-  
-
-// Initial state untuk auth admin
-const initialState = {
-    user: null,
-    isError: false,
-    isSuccess: false,
-    isLoading: false,
-    message: ""
-}
-
-// Axios instance dengan baseURL dan credentials
-const api = axios.create({
-    baseURL: getApiBaseUrl(),
-    withCredentials: true
-});
-
 // Fungsi login admin
 // export const LoginAdmin = createAsyncThunk("admin/login", async (user, thunkAPI) => {
 //     try {
