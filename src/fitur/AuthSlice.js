@@ -1,26 +1,26 @@
-// import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import axios from "axios";
-// const getApiBaseUrl = () => {
-//     const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
-//    const baseUrl = process.env.REACT_APP_URL.replace(/^https?:\/\//, '');
-//     return `${protocol}://${baseUrl}`;
-//   };
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+const getApiBaseUrl = () => {
+    const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
+   const baseUrl = process.env.REACT_APP_URL.replace(/^https?:\/\//, '');
+    return `${protocol}://${baseUrl}`;
+  };
   
 
-// // Initial state untuk auth admin
-// const initialState = {
-//     user: null,
-//     isError: false,
-//     isSuccess: false,
-//     isLoading: false,
-//     message: ""
-// }
+// Initial state untuk auth admin
+const initialState = {
+    user: null,
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: ""
+}
 
-// // Axios instance dengan baseURL dan credentials
-// const api = axios.create({
-//     baseURL: getApiBaseUrl(),
-//     withCredentials: true
-// });
+// Axios instance dengan baseURL dan credentials
+const api = axios.create({
+    baseURL: getApiBaseUrl(),
+    withCredentials: true
+});
 
 // // Fungsi login admin
 // export const LoginAdmin = createAsyncThunk("admin/login", async (user, thunkAPI) => {
@@ -140,30 +140,24 @@ const api = axios.create({
 //         return thunkAPI.rejectWithValue(error.response?.data?.msg || 'An error occurred');
 //     }
 // });
-export const LoginAdmin = (credentials) => async (dispatch) => {
-    dispatch({ type: 'LOGIN_REQUEST' });
+export const LoginAdmin = createAsyncThunk("admin/login", async (credentials, thunkAPI) => {
     try {
-        const response = await api.post('/login', credentials, { withCredentials: true });
-        dispatch({ type: 'LOGIN_SUCCESS', payload: response.data });
-        dispatch(getMeAdmin());
+        const response = await api.post('/login', credentials);
+        return response.data;
     } catch (error) {
-        dispatch({ type: 'LOGIN_FAILURE', error: error.response.data });
+        return thunkAPI.rejectWithValue(error.response?.data?.msg || 'An error occurred');
     }
-};
+});
 
-
-// Fungsi getMe untuk admin (memvalidasi sesi)
-export const getMeAdmin = () => async (dispatch, getState) => {
-    const { isAuthenticated } = getState().auth;
-    if (!isAuthenticated) return; // Pastikan hanya dipanggil jika isAuthenticated
-
+// getMeAdmin function to validate session
+export const getMeAdmin = createAsyncThunk("admin/getMe", async (_, thunkAPI) => {
     try {
-        const response = await axios.get('/api/me', { withCredentials: true });
-        dispatch({ type: 'SET_USER', payload: response.data });
+        const response = await api.get('/api/me');
+        return response.data;
     } catch (error) {
-        console.error("Gagal mendapatkan data admin:", error);
+        return thunkAPI.rejectWithValue('Failed to retrieve admin data');
     }
-};
+});
 
 // Fungsi logout admin
 export const LogOutAdmin = createAsyncThunk("admin/logout", async () => {
