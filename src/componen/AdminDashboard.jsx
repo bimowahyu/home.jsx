@@ -21,7 +21,7 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchRekapData = async () => {
       try {
-        const response = await axios.get('/filter');
+        const response = await axios.get('/filter',{withCredentials: true});
         if (response.status === 200) {
           const combinedData = [...response.data.layakHuni, ...response.data.tidakLayakHuni];
           const calculatedStatistics = calculateStatistics(combinedData);
@@ -42,7 +42,7 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('/me');
+        const response = await axios.get('/me',{withCredentials: true});
         if (response.status === 200) {
           setUsername(response.data.username);
         } else {
