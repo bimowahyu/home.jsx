@@ -41,25 +41,25 @@ function AdminDashboard() {
     fetchRekapData();
   }, [navigate]);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_URL}/me`,{
-            withCredentials: true
-        });
-        if (response.status === 200) {
-          setUsername(response.data.username);
-        } else {
-          navigate("/login");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        navigate("/login");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const response = await axios.get(`${process.env.REACT_APP_URL}/me`,{
+  //           withCredentials: true
+  //       });
+  //       if (response.status === 200) {
+  //         setUsername(response.data.username);
+  //       } else {
+  //         navigate("/login");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //       navigate("/login");
+  //     }
+  //   };
 
-    fetchUser();
-  }, [navigate]);
+  //   fetchUser();
+  // }, [navigate]);
 
   const calculateStatistics = (data) => {
     const stats = {
@@ -134,7 +134,7 @@ function AdminDashboard() {
   return (
     <div className="dashboard">
       <header>
-        <h2>Welcome, {username}</h2>
+        <h2>Welcome</h2>
       </header>
       <main>
         <h2>Dashboard</h2>
