@@ -100,9 +100,9 @@ function Login() {
             /> Remember me
           </label>
         </div>
-        <div className="recaptcha-container">
+{/*         <div className="recaptcha-container">
           <ReCAPTCHA ref={recaptchaRef} sitekey="6LdFxh8qAAAAAO_NZ3p7scn70POdyee9KqSUpomD" onChange={() => {}} />
-        </div>
+        </div> */}
         <div className="extra-links">
           <a href="/reset-password">Lupa Password?</a>
         </div>
